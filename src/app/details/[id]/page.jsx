@@ -9,7 +9,7 @@ import RazorpayPayment from "@/components/purchase";
 import { checkProjectPurchasedByUser } from "@/app/actions/purchase";
 
 async function Page({ params }) {
-  const project = await getDetailsforProject(params.id);
+  const project = await getDetailsforProject(await(params).id);
   const creator = await getDetailsforCreator(project.creatorId);
   const isPurchased = await checkProjectPurchasedByUser(project.id);
   return (

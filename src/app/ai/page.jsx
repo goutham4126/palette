@@ -7,6 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import {toast} from "react-hot-toast"
 import { FaCamera,FaMicrophone  } from "react-icons/fa";
 import { RiAiGenerate } from "react-icons/ri";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import {useRouter} from "next/navigation"
 
 if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
   throw new Error("Missing NEXT_PUBLIC_GEMINI_API_KEY environment variable")
@@ -22,6 +24,8 @@ export default function WebsiteChat() {
     }
     return []
   })
+
+  const router=useRouter();
   
   const [userInput, setUserInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -303,7 +307,7 @@ export default function WebsiteChat() {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
-        <a href="/" className="text-xl font-bold cursor-pointer">Pallette</a>
+        <div onClick={() => router.back()} className="text-xl font-bold cursor-pointer"><IoMdArrowRoundBack className="h-5 w-5"/></div>
         <div className="flex gap-4">
           <IoMdRefresh 
             className="h-6 w-6 cursor-pointer hover:scale-110 transition"

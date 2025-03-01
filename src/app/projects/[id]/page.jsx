@@ -1,7 +1,7 @@
 import Playground from "../_components/Playground";
 
-function Page({ params }) {
-  const projectId = params.id;
+async function Page({ params }) {
+  const projectId = await(params).id;
 
   return (
     <div>
