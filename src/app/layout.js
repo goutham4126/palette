@@ -1,5 +1,13 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import {Toaster} from "react-hot-toast"
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,12 +26,34 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <SignedOut>
+          <div className="flex flex-col justify-center items-center h-screen bg-black relative overflow-hidden">
+            <div className="flex flex-col items-center bg-white p-6 rounded-lg shadow-2xl">
+              <SignInButton mode="modal">
+                <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-semibold text-lg rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                  <span>Sign In To Pallette</span>
+                </button>
+              </SignInButton>
+            </div>
+            </div>
+        </SignedOut>
+        <SignedIn>
+            <div className="flex justify-between items-center bg-blue-950 text-white p-3">
+                <a href="/" className="text-xl font-bold cursor-pointer">Pallette</a>
+                <UserButton userProfileMode="modal" />
+            </div>
+            <div>
+              {children}
+            </div>
+        </SignedIn>
+        <Toaster/>
       </body>
     </html>
+    </ClerkProvider>
   );
 }
