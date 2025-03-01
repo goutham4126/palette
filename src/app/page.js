@@ -24,7 +24,7 @@ export default function HomeClient({ user }) {
           <h1 className="text-6xl font-bold text-white mb-6 drop-shadow-lg">
             Welcome to{" "}
             <span className="text-purple-400 relative">
-              Pallete
+              Pallette
               <span className="absolute -bottom-2 left-0 w-full h-1 bg-purple-400/70 rounded-full"></span>
             </span>
           </h1>
@@ -33,13 +33,18 @@ export default function HomeClient({ user }) {
             Your ultimate platform for creating, customizing, and sharing dynamic website themes with ease.
           </p>
 
-          {/* Start Creating Templates Button */}
           <div className="mt-10">
             <a
               href="/projects"
               className="px-10 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full shadow-xl hover:shadow-purple-500/20 transition-all transform hover:scale-105 inline-block"
             >
               Start Creating Templates
+            </a>
+            <a
+              href="/market"
+              className="px-10 py-4 ml-10 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full shadow-xl hover:shadow-purple-500/20 transition-all transform hover:scale-105 inline-block"
+            >
+               Buy or Sell Templates
             </a>
           </div>
         </div>
