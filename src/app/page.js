@@ -8,6 +8,7 @@ async function page() {
   return (
     <div>
         <a href="/projects" alt="Manual">Template Creation</a>
+        Hello
     </div> 
   )
 }
