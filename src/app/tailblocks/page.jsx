@@ -5,7 +5,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { vs2015, docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import getIcons from '../icons';
 import getBlock from '../blocks';
-
+import { useRouter } from 'next/navigation';
 const iconList = getIcons();
 const blockListArr = [];
 
@@ -14,7 +14,6 @@ Object.entries(iconList).forEach(([type, icons]) => {
 });
 
 const themeList = ["indigo", "red", "pink", "blue", "green", "yellow"];
-
 const desktopIcon = (
   <svg
     stroke="currentColor"
@@ -104,6 +103,9 @@ const TailBlocks = () => {
   const sidebarRef = useRef(null);
   const openerRef = useRef(null);
 
+
+  const router=useRouter()
+  
   useEffect(() => {
     document.addEventListener('keydown', keyboardNavigation);
     return () => {
@@ -304,6 +306,7 @@ const TailBlocks = () => {
       </aside>
       <div className="toolbar">
         <button className="opener" onClick={toggleSidebar} ref={openerRef}></button>
+        <button className="mr-4 text-white font-semibold" onClick={() => router.back()}>Go back</button>
         {codeView &&
           <div className="clipboard-wrapper">
             <button className="copy-the-block copy-to-clipboard" onClick={copyToClipboard}>

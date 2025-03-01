@@ -1,6 +1,6 @@
 'use client'
-import { IoMdRefresh, IoMdCode } from 'react-icons/io'
-import { FiCopy, FiDownload } from 'react-icons/fi'
+import { IoMdRefresh } from 'react-icons/io'
+import { FiDownload } from 'react-icons/fi'
 
 export const Header = ({ clearHistory, handleDownload }) => (
   <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white">

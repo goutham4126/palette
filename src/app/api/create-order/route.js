@@ -1,4 +1,4 @@
-import {NextResponse,NextRequest} from 'next/server'
+import {NextResponse} from 'next/server'
 import Razorpay from 'razorpay'
 
 
@@ -12,7 +12,7 @@ const razorpay=new Razorpay(
 export async function POST(req){
     try{
         const order=await razorpay.orders.create({
-            amount:500*100,
+            amount:req.price*100,
             currency:"INR",
             receipt:"receipt_"+Math.random().toString(36).substring(7),
         });
