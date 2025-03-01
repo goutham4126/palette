@@ -79,10 +79,10 @@ export default function HomeClient({ user }) {
               Join thousands of designers and developers who are creating stunning templates with Pallete.
             </p>
             <a
-              href="/signup"
+              href="/projects"
               className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full shadow-lg hover:shadow-purple-500/20 transition-all transform hover:scale-105 inline-block"
             >
-              Get Started for Free
+              Create manual projects here
             </a>
           </div>
         </div>
