@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-import { notFound } from 'next/navigation';
 import { getDetailsforProject } from "@/app/actions/market";
 import Image from "next/image";
 import {getDetailsforCreator} from "@/app/actions/manual"
@@ -9,11 +7,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Copy, User, Code2, ShoppingCart, CalendarDays, FileText,Coins } from "lucide-react";
 import RazorpayPayment from "@/components/purchase";
 
-
 async function Page({ params }) {
-
   const project = await getDetailsforProject(params.id);
-  if (!project) notFound();
   const creator = await getDetailsforCreator(project.creatorId);
   return (
     <div className="max-w-6xl mx-auto p-6 bg-gradient-to-b from-background to-muted/10 min-h-screen">
@@ -184,7 +179,7 @@ async function Page({ params }) {
           </Card>
 
           {/* Collaborators */}
-          {project?.collaborators?.length > 0 && (
+          {project.collaborators?.length > 0 && (
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -215,7 +210,7 @@ async function Page({ params }) {
           )}
 
           {/* Purchase History */}
-          {project?.purchases?.length > 0 && (
+          {project.purchases?.length > 0 && (
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2">
