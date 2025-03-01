@@ -8,11 +8,20 @@ import { getAllManualProjectsByUser } from "@/app/actions/manual"
 import { Card, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Separator } from '@/components/ui/separator'
 import AddToMarket from '@/components/AddToMarket'
+import { checkProjectPurchasedByUser } from "@/app/actions/purchase";
+import {Badge} from "@/components/ui/badge"
 
 async function page() {
   const projects = await getAllProjectsForSale()
   const user = await checkUser()
   const manualprojects = await getAllManualProjectsByUser(user.id);
+
+  const projectsWithPurchaseStatus = await Promise.all(
+    projects.map(async (project) => ({
+      ...project,
+      isPurchased: await checkProjectPurchasedByUser(project.id)
+    }))
+  );
   
   return (
     <div className="p-8">
@@ -71,20 +80,22 @@ async function page() {
         <h1 className="text-4xl font-bold mb-8">Marketplace</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
+          {projectsWithPurchaseStatus.map((project) => (
             <div 
               key={project.id}
               className="border rounded-lg p-6 hover:shadow-lg transition-shadow"
             >
+               <Badge className="mb-4" variant={project.isPurchased ? 'default' : 'secondary'}>
+                {project.isPurchased ? 'Purchased' : 'Available'}
+              </Badge>
               <div className="relative h-48 mb-4">
                 <div className="bg-gray-100 w-full h-full rounded-lg flex items-center justify-center">
                   <span className="text-gray-400">Project Preview</span>
                 </div>
               </div>
 
-              <h2 className="text-xl font-semibold mb-2">{project.title}</h2>
-              
-              <div className="flex items-center gap-2 mb-2">
+              <h2 className="text-xl font-semibold mb-4">{project.title}</h2>
+              <div className="flex items-center gap-2 mb-4">
                 {project.creator.name && (
                   <Image
                     src={project.creator.imageUrl}

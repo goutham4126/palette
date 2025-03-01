@@ -1,58 +1,82 @@
 "use client";
-
 import { useState } from 'react';
 import Script from 'next/script';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
-import { ShoppingCart } from 'lucide-react';
+import { Loader2, ShoppingCart } from 'lucide-react';
+import { addPurchaseOfProjectByUser } from '@/app/actions/purchase';
 
-const RazorpayPayment = ({ amount, productName,creator }) => {
+const RazorpayPayment = ({ amount, productName, creator, templateId,isPurchased }) => {
   const [isProcessing, setIsProcessing] = useState(false);
-  console.log(creator)
 
   const handlePayment = async () => {
     setIsProcessing(true);
     try {
+      // Validate required fields
+      if (!templateId || !amount) {
+        throw new Error('Missing required payment information');
+      }
+
+      // Create order
       const res = await fetch("/api/create-order", {
         method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount: amount * 100 })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: Math.round(amount * 100) })
       });
 
-      if (!res.ok) throw new Error('Failed to create order');
-      
-      const data = await res.json();
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to create order');
+      }
+
+      const { orderId } = await res.json();
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: amount * 100,
+        amount: Math.round(amount * 100),
         currency: "INR",
         name: "Pallette",
         description: `Purchase of ${productName}`,
-        order_id: data.orderId,
-        handler: function (response) {
-          console.log('Payment successful:', response);
+        order_id: orderId,
+        handler: async function (response) {
+          try {
+            if (response.razorpay_payment_id) {
+              const payment = await addPurchaseOfProjectByUser(templateId);
+              if (payment.success) {
+                alert('Purchase successful!');
+                window.location.reload();
+              } else {
+                alert(payment.error || 'Purchase recording failed');
+              }
+            }
+          } catch (error) {
+            console.error('Payment processing error:', error);
+            alert(error.message || 'Payment processing failed');
+          }
         },
         prefill: {
-          name: "Customer Name",
-          email: "customer@example.com",
-          contact: "9160804126"
+          name: creator?.name || '',
+          email: creator?.email || '',
+          contact: "9999999999"
         },
-        theme: {
-          color: "#6366f1"
-        },
+        theme: { color: "#6366f1" },
         modal: {
           ondismiss: () => setIsProcessing(false)
         }
       };
 
       const paymentObject = new window.Razorpay(options);
+      
+      // Add payment failure handler
+      paymentObject.on('payment.failed', (response) => {
+        console.error('Payment Failed:', response.error);
+        alert(`Payment failed: ${response.error.description}`);
+        setIsProcessing(false);
+      });
+
       paymentObject.open();
     } catch (error) {
       console.error('Payment error:', error);
-    } finally {
+      alert(error.message || 'Payment initialization failed');
       setIsProcessing(false);
     }
   };
@@ -66,11 +90,16 @@ const RazorpayPayment = ({ amount, productName,creator }) => {
       
       <Button
         onClick={handlePayment}
-        disabled={isProcessing}
+        disabled={isProcessing || isPurchased}
         size="lg"
         className="w-full"
       >
-        {isProcessing ? (
+        {isPurchased ? (
+          <>
+            <ShoppingCart className="mr-2 h-5 w-5" />
+            Purchased
+          </>
+        ) : isProcessing ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Processing...
@@ -78,7 +107,7 @@ const RazorpayPayment = ({ amount, productName,creator }) => {
         ) : (
           <>
             <ShoppingCart className="mr-2 h-5 w-5" />
-            Purchase Now
+            Purchase Now (₹{amount})
           </>
         )}
       </Button>

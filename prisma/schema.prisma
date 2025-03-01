@@ -52,7 +52,7 @@ model Purchase {
 
   @@unique([buyerId, templateId])
 }
-
+  
 
 model Collaborator {
   id          String        @id @default(uuid())

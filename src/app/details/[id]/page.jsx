@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Copy, User, Code2, ShoppingCart, CalendarDays, FileText,Coins } from "lucide-react";
 import RazorpayPayment from "@/components/purchase";
+import { checkProjectPurchasedByUser } from "@/app/actions/purchase";
 
 async function Page({ params }) {
   const project = await getDetailsforProject(params.id);
   const creator = await getDetailsforCreator(project.creatorId);
+  const isPurchased = await checkProjectPurchasedByUser(project.id);
   return (
     <div className="max-w-6xl mx-auto p-6 bg-gradient-to-b from-background to-muted/10 min-h-screen">
       {/* Header Section */}
@@ -85,7 +87,9 @@ async function Page({ params }) {
             </Card>
           )}
 
-          {/* Code Previews */}
+
+        {
+            isPurchased && (
           <div className="space-y-6">
             {project.htmlCode && (
               <Card>
@@ -154,6 +158,8 @@ async function Page({ params }) {
               </Card>
             )}
           </div>
+            )
+          } 
         </div>
 
         {/* Right Column */}
@@ -171,6 +177,8 @@ async function Page({ params }) {
                   amount={project.price} 
                   productName={project.title}
                   creator={creator}
+                  templateId={project.id}
+                  isPurchased={isPurchased}
                 />
               <div className="text-sm text-muted-foreground text-center">
                 Secure transaction · Instant delivery
