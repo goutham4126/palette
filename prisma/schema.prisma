@@ -20,6 +20,7 @@ model User {
   email           String @unique
   imageUrl        String?
   manualprojects  Manualproject[]
+  purchases       Purchase[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -30,12 +31,28 @@ model Manualproject {
   htmlCode        String?
   cssCode         String?
   jsCode          String?
+  price           Float?        
+  details         String?
+  isListed        Boolean?        @default(false)
   creatorId       String
   collaborators   Collaborator[]
   creator         User    @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  purchases       Purchase[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+  
+model Purchase {
+  id           String        @id @default(uuid())
+  buyer        User          @relation(fields: [buyerId], references: [id])
+  buyerId      String
+  template     Manualproject @relation(fields: [templateId], references: [id])
+  templateId   String
+  purchasedAt  DateTime      @default(now())
+
+  @@unique([buyerId, templateId])
+}
+
 
 model Collaborator {
   id          String        @id @default(uuid())

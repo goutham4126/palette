@@ -50,26 +50,34 @@ export async function getManualProject(id) {
     where: { id },
   });
 
-  if (!project || project.creatorId !== user.id) {
+  if (!project) {
     throw new Error("Unauthorized or project not found");
   }
 
   return project;
 }
 
-export async function updateManualProject(id, htmlCode, cssCode, jsCode) {
-  const user = await checkUser();
+  export async function updateManualProject(id, htmlCode, cssCode, jsCode) {
+    const user = await checkUser();
 
-  const project = await db.manualproject.findUnique({
-    where: { id },
-  });
+    const project = await db.manualproject.findUnique({
+      where: { id },
+    });
 
-  if (!project || project.creatorId !== user.id) {
-    throw new Error("Unauthorized or project not found");
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    return db.manualproject.update({
+      where: { id },
+      data: { htmlCode, cssCode, jsCode },
+    });
   }
 
-  return db.manualproject.update({
-    where: { id },
-    data: { htmlCode, cssCode, jsCode },
-  });
-}
+  export async function getDetailsforCreator(id)
+  {
+      const user = await db.user.findUnique({
+        where: { id: id },
+      });
+      return user;
+  }
