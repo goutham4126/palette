@@ -23,9 +23,6 @@ const nextConfig = {
       "sjc.microlink.io"
     ],
   },
-  experimental: {
-    outputFileTracing: false
-  }
 };
 
 export default nextConfig;

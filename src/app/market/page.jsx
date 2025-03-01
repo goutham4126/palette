@@ -10,12 +10,19 @@ import { Separator } from '@/components/ui/separator'
 import AddToMarket from '@/components/AddToMarket'
 
 async function page() {
-  const projects = await getAllProjectsForSale()
-  const user = await checkUser()
-  const manualprojects = await getAllManualProjectsByUser(user.id);
+  const [projects, user] = await Promise.all([
+    getAllProjectsForSale().catch(() => []),
+    checkUser().catch(() => null)
+  ])
+  let manualprojects = []
+  if (user?.id) {
+    manualprojects = await getAllManualProjectsByUser(user.id).catch(() => [])
+  }
   
   return (
     <div className="p-8">
+      {user && (
+        <>  
       <section className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -66,7 +73,8 @@ async function page() {
       </section>
 
       <Separator className="my-12" />
-      
+      </>
+      )}
       <section>
         <h1 className="text-4xl font-bold mb-8">Marketplace</h1>
         
