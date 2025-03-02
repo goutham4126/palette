@@ -8,6 +8,7 @@ import { getAllCollaborationsByUserId } from "@/app/actions/collaborators";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from '@/components/ui/separator';
 
+
 async function Projects() {
   const currentUser = await checkUser()
   const projects = await getAllManualProjectsByUser(currentUser.id);

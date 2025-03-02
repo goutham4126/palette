@@ -1,35 +1,23 @@
-"use client"
 
-import { useEffect, useRef } from "react"
-
-// Accept user as a prop from the server component
-export default function HomeClient({ user }) {
+export default function page() {
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
       style={{
-        backgroundImage: "url('/bg_for_home.jpg')", // Replace with your image path
+        backgroundImage: "url('/bg_for_home.jpg')", 
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Animated Background Elements */}
-      <BackgroundElements />
 
-      {/* Header - Full Screen Height */}
-      <header className="h-screen flex flex-col justify-center items-center text-center relative z-10">
+      <header className="my-32 flex flex-col justify-center items-center text-center relative z-10">
         <div className="max-w-4xl mx-auto px-4 relative z-10 animate-fade-in">
-          {/* Directly display the title and description without the card */}
           <h1 className="text-6xl font-bold text-white mb-6 drop-shadow-lg">
-            Welcome to{" "}
-            <span className="text-purple-400 relative">
-              Pallette
-              <span className="absolute -bottom-2 left-0 w-full h-1 bg-purple-400/70 rounded-full"></span>
-            </span>
+            Welcome to Pallette
           </h1>
 
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-semibold">
             Your ultimate platform for creating, customizing, and sharing dynamic website themes with ease.
           </p>
 
@@ -51,11 +39,7 @@ export default function HomeClient({ user }) {
       </header>
 
       {/* Features Section */}
-      <section className="w-full max-w-6xl mx-auto px-4 py-24 relative z-10">
-        <h2 className="text-4xl font-bold text-center text-white mb-16 animate-fade-in-up">
-          Why Choose <span className="text-purple-400">Pallete</span>?
-        </h2>
-
+      <section className="w-full max-w-6xl mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featureCards.map((feature, index) => (
             <FeatureCard
@@ -122,109 +106,7 @@ const FeatureCard = ({ icon, color, title, description, delay }) => {
   )
 }
 
-// Background Elements Component
-const BackgroundElements = () => {
-  const canvasRef = useRef(null)
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext("2d")
-    let animationFrameId
-
-    // Set canvas dimensions
-    const handleResize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-
-    window.addEventListener("resize", handleResize)
-    handleResize()
-
-    // Particle class
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width
-        this.y = Math.random() * canvas.height
-        this.size = Math.random() * 5 + 1
-        this.speedX = Math.random() * 1 - 0.5
-        this.speedY = Math.random() * 1 - 0.5
-        this.color = this.getRandomColor()
-      }
-
-      getRandomColor() {
-        const colors = [
-          "rgba(191, 219, 254, 0.3)", // blue-200
-          "rgba(216, 180, 254, 0.3)", // purple-200
-          "rgba(251, 207, 232, 0.3)", // pink-200
-          "rgba(254, 215, 170, 0.3)", // orange-200
-        ]
-        return colors[Math.floor(Math.random() * colors.length)]
-      }
-
-      update() {
-        this.x += this.speedX
-        this.y += this.speedY
-
-        if (this.size > 0.2) this.size -= 0.01
-
-        // Wrap around edges
-        if (this.x < 0) this.x = canvas.width
-        if (this.x > canvas.width) this.x = 0
-        if (this.y < 0) this.y = canvas.height
-        if (this.y > canvas.height) this.y = 0
-      }
-
-      draw() {
-        ctx.fillStyle = this.color
-        ctx.beginPath()
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-        ctx.fill()
-      }
-    }
-
-    // Create particle array
-    const particleArray = []
-    const numberOfParticles = 100
-
-    for (let i = 0; i < numberOfParticles; i++) {
-      particleArray.push(new Particle())
-    }
-
-    // Animation loop
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      for (let i = 0; i < particleArray.length; i++) {
-        particleArray[i].update()
-        particleArray[i].draw()
-      }
-
-      animationFrameId = requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    // Cleanup
-    return () => {
-      window.removeEventListener("resize", handleResize)
-      cancelAnimationFrame(animationFrameId)
-    }
-  }, [])
-
-  return (
-    <>
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />
-
-      {/* Gradient Blobs */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-        <div className="absolute top-0 -left-40 w-96 h-96 bg-blue-300/30 rounded-full filter blur-3xl animate-blob"></div>
-        <div className="absolute top-1/3 -right-40 w-96 h-96 bg-purple-300/30 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-pink-300/30 rounded-full filter blur-3xl animate-blob animation-delay-4000"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-yellow-300/20 rounded-full filter blur-3xl animate-blob animation-delay-6000"></div>
-      </div>
-    </>
-  )
-}
 
 // Feature cards data
 const featureCards = [

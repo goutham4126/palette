@@ -57,11 +57,11 @@ export default function RootLayout({ children }) {
             </div>
 
             {/* Sign In Card */}
-            <div className="flex flex-col items-center bg-white/50 backdrop-blur-sm p-8 rounded-3xl shadow-2xl border border-white/10 relative z-10 transform transition-all duration-300 hover:scale-105">
-              <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
-                Welcome to <span className="text-purple-900">Pallette</span>
+            <div className="flex flex-col items-center bg-white/100 backdrop-blur-sm p-8 rounded-3xl shadow-2xl border border-white/10 relative z-10 transform transition-all duration-300 hover:scale-105">
+              <h1 className="text-4xl font-bold text-gray-800 mb-4 drop-shadow-lg">
+                Welcome to Pallette
               </h1>
-              <p className="text-gray-200 text-lg mb-6 max-w-md text-center">
+              <p className="text-gray-800 text-lg font-semibold mb-6 max-w-md text-center">
                 Your ultimate platform for creating, customizing, and sharing dynamic website themes with ease.
               </p>
               <SignInButton mode="modal">
@@ -86,11 +86,6 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </SignedOut>  
-
-
-
-
-
 
         <SignedIn>
             <div className="flex justify-between items-center bg-[#070533] text-white p-3">
