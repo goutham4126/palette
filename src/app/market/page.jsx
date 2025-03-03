@@ -10,18 +10,29 @@ import { Separator } from '@/components/ui/separator'
 import AddToMarket from '@/components/AddToMarket'
 import { checkProjectPurchasedByUser } from "@/app/actions/purchase";
 import {Badge} from "@/components/ui/badge"
+import ProjectBuyers from "@/components/ProjectBuyers"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 async function page() {
   const projects = await getAllProjectsForSale()
   const user = await checkUser()
   const manualprojects = await getAllManualProjectsByUser(user.id);
-
   const projectsWithPurchaseStatus = await Promise.all(
     projects.map(async (project) => ({
       ...project,
       isPurchased: await checkProjectPurchasedByUser(project.id)
     }))
   );
+
+  const purchasedProjects = projectsWithPurchaseStatus.filter(project => project.isPurchased)
+  const availableProjects = projectsWithPurchaseStatus.filter(project => !project.isPurchased && project.creator.id !== user.id)
   
   return (
     <div className="p-8">
@@ -59,6 +70,21 @@ async function page() {
                         <div className="mb-2">
                           Last updated: {new Date(project.updatedAt).toLocaleDateString()}
                         </div>
+                        <Dialog>
+                          <DialogTrigger>
+                            <Badge>
+                              Details of Listed project
+                            </Badge>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Buyers of {project.title}</DialogTitle>
+                              <div className="h-[70vh] overflow-y-auto">
+                                <ProjectBuyers projectId={project.id} price={project.price?.toFixed(2)}/>
+                              </div>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
                       </>
                     ) : (
                       'Not listed'
@@ -75,12 +101,82 @@ async function page() {
       </section>
 
       <Separator className="my-12" />
+
+
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <BookText className="w-6 h-6 text-primary"/>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+              Your Purchases
+            </h1>
+          </div>
+        </div>
+
+        {manualprojects.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-xl bg-muted/50">
+            <h3 className="text-xl font-semibold mb-2">No manuals found</h3>
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {purchasedProjects.map((project) => (
+              <div 
+                  key={project.id}
+                  className="border rounded-lg p-6 hover:shadow-lg transition-shadow"
+                >
+                  <Badge className="mb-4" variant={project.isPurchased ? 'default' : 'secondary'}>
+                    {project.isPurchased ? 'Purchased' : 'Available'}
+                  </Badge>
+                  <div className="relative h-48 mb-4">
+                    <div className="bg-gray-100 w-full h-full rounded-lg flex items-center justify-center">
+                      <span className="text-gray-400">Project Preview</span>
+                    </div>
+                  </div>
+
+                  <h2 className="text-xl font-semibold mb-4">{project.title}</h2>
+                  <div className="flex items-center gap-2 mb-4">
+                    {project.creator.name && (
+                      <Image
+                        src={project.creator.imageUrl}
+                        alt={project.creator.name || 'Creator'}
+                        width={32}
+                        height={32}
+                        className="rounded-full"
+                      />
+                    )}
+                    <span className="text-sm text-gray-600">
+                      {project.creator.name || 'Anonymous Creator'}
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-1 text-2xl font-bold">
+                      <span>₹</span>
+                      <span>{project.price?.toFixed(2)}</span>
+                    </div>
+                    
+                    <div className="space-x-2">
+                      <Link
+                        href={`/details/${project.id}`}
+                        className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                      >
+                        View Details
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <Separator className="my-12" />
       
       <section>
         <h1 className="text-4xl font-bold mb-8">Marketplace</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projectsWithPurchaseStatus.map((project) => (
+          {availableProjects.map((project) => (
             <div 
               key={project.id}
               className="border rounded-lg p-6 hover:shadow-lg transition-shadow"

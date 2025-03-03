@@ -107,6 +107,7 @@ export async function getAllProjectsForSale() {
       include: {
         creator: {
           select: {
+            id: true,
             name: true,
             imageUrl: true
           }

@@ -14,7 +14,7 @@ export default function page() {
       <header className="my-32 flex flex-col justify-center items-center text-center relative z-10">
         <div className="max-w-4xl mx-auto px-4 relative z-10 animate-fade-in">
           <h1 className="text-6xl font-bold text-white mb-6 drop-shadow-lg">
-            Welcome to Pallette
+            Welcome to Palette
           </h1>
 
           <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-semibold">
@@ -60,7 +60,7 @@ export default function page() {
           <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-12 text-center shadow-2xl border border-white/20 animate-fade-in-up">
             <h2 className="text-3xl font-bold text-white mb-6">Ready to transform your design workflow?</h2>
             <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-              Join thousands of designers and developers who are creating stunning templates with Pallete.
+              Join thousands of designers and developers who are creating stunning templates with Palette.
             </p>
             <a
               href="/projects"
@@ -75,7 +75,7 @@ export default function page() {
       {/* Footer */}
       <footer className="mt-auto py-12 w-full text-center relative z-10 ">
         <div className="relative z-10">
-          <p className="text-white/80">© 2023 Pallete. All rights reserved.</p>
+          <p className="text-white/80">© 2023 Palette. All rights reserved.</p>
           <div className="flex justify-center mt-4 space-x-6">
             <a href="#" className="text-white/60 hover:text-white transition-colors">
               Terms

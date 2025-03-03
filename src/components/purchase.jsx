@@ -34,7 +34,7 @@ const RazorpayPayment = ({ amount, productName, creator, templateId,isPurchased 
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: Math.round(amount * 100),
         currency: "INR",
-        name: "Pallette",
+        name: "Palette",
         description: `Purchase of ${productName}`,
         order_id: orderId,
         handler: async function (response) {

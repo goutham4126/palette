@@ -61,3 +61,18 @@ export const checkProjectPurchasedByUser = async (templateId) => {
         return false;
       }
 };
+
+
+export const getAllBuyersByProject = async (templateId) => {
+  try {
+    const buyers = await db.purchase.findMany({
+      where: { templateId: templateId },
+      include: { buyer: { select: { id: true, name: true, email: true }} }
+    });
+    return { success: true, data: buyers };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+

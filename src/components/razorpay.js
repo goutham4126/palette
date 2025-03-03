@@ -19,7 +19,7 @@ const Razorpay = () => {
     const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
       amount: AMOUNT*100,
-      name: "Pallette",
+      name: "Palette",
       currency: "INR",
       order_id: data.id,
       description: "Thank you for your purchase",
