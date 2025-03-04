@@ -139,4 +139,3 @@ export async function getAllCollaborationsByUserId(userId) {
     return { success: false, message: "Failed to get collaborations", data: [] };
   }
 }
-

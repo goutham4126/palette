@@ -85,7 +85,7 @@ const viewList = [
   }
 ];
 
-const TailBlocks = () => {
+const Palette = () => {
   const [ready, setReady] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -387,4 +387,4 @@ const TailBlocks = () => {
   );
 };
 
-export default TailBlocks;
+export default Palette;

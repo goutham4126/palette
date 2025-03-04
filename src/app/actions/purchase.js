@@ -75,4 +75,37 @@ export const getAllBuyersByProject = async (templateId) => {
   }
 };
 
+  
+export async function getAllPurchasesInProject() {
+  try {
+    const projects = await db.manualproject.findMany({
+      orderBy: {
+        purchases: {
+          _count: 'desc'
+        }
+      },
+      select: {
+        id: true,
+        title: true,
+        price: true,
+        _count: {
+          select: { purchases: true }
+        },
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            imageUrl: true
+          }
+        }
+      },
+      take: 10 // Get top 10 most purchased
+    });
+    return projects;
+  } catch (error) {
+    return { success: false, message: "Failed to get projects", data: [] };
+  }
+}
+
 

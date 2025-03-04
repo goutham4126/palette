@@ -321,7 +321,7 @@ const Playground = ({ template = "static", projectId }) => {
                         <RiChatAiFill className="h-6 w-6 cursor-pointer" />
                       </a>
                       <Button className="bg-black text-white">
-                        <a href="/tailblocks">Components</a>
+                        <a href="/components">Components</a>
                       </Button>
                       <SaveButton projectId={projectId} />
                       <TfiFullscreen className="cursor-pointer h-5 w-5" onClick={() => setIsFullScreen(true)} />

@@ -1,5 +1,6 @@
-
-export default function page() {
+import { getAllPurchasesInProject } from "./actions/purchase"
+export default async function page() {
+  const topPurchases = await getAllPurchasesInProject();
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
@@ -58,16 +59,40 @@ export default function page() {
       <section className="w-full py-20 relative z-10">
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-12 text-center shadow-2xl border border-white/20 animate-fade-in-up">
-            <h2 className="text-3xl font-bold text-white mb-6">Ready to transform your design workflow?</h2>
-            <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-              Join thousands of designers and developers who are creating stunning templates with Palette.
-            </p>
-            <a
-              href="/projects"
-              className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full shadow-lg hover:shadow-purple-500/20 transition-all transform hover:scale-105 inline-block"
-            >
-              Create manual projects here
-            </a>
+            <h2 className="text-3xl font-bold text-white mb-6">Top Purchased Templates</h2>
+            {
+              topPurchases.map((project, index) => (
+                <div key={index}>
+                  {
+                      project._count.purchases>0 && (
+                      <div className="flex  items-center justify-between border-b border-white/20 py-4">
+                        <div className="flex items-center space-x-4">
+                          <img 
+                            src={project.creator.imageUrl} 
+                            alt={project.creator.name} 
+                            className="w-12 h-12 rounded-full"
+                          />
+                          <div className="text-left">
+                            <h3 className="text-white font-semibold">{project.title}</h3>
+                            <p className="text-gray-300">by {project.creator.name}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="text-right">
+                            <p className="text-white font-semibold">
+                              {project._count.purchases} purchases
+                            </p>
+                            {project.price && (
+                              <p className="text-gray-300">${project.price.toFixed(2)}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  }
+                </div>
+              ))
+            }
           </div>
         </div>
       </section>

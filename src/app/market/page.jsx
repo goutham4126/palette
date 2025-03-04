@@ -32,7 +32,7 @@ async function page() {
   );
 
   const purchasedProjects = projectsWithPurchaseStatus.filter(project => project.isPurchased)
-  const availableProjects = projectsWithPurchaseStatus.filter(project => !project.isPurchased && project.creator.id !== user.id)
+  const availableProjects = projectsWithPurchaseStatus.filter(project => project.creator.id !== user.id)
   
   return (
     <div className="p-8">
