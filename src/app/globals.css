@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css?family=Space+Mono&display=swap');
 
 :root {
   --base-500: #A0AEC0;
