@@ -8,7 +8,7 @@ import { Copy, User, Code2, ShoppingCart, CalendarDays, FileText,Coins } from "l
 import RazorpayPayment from "@/components/purchase";
 import { checkProjectPurchasedByUser } from "@/app/actions/purchase";
 
-async function Page({ params }) {
+async function page({ params }) {
   const {id}=await params;
   const project = await getDetailsforProject(id);
   const creator = await getDetailsforCreator(project.creatorId);
@@ -254,4 +254,4 @@ async function Page({ params }) {
   );
 }
 
-export default Page;
+export default page;

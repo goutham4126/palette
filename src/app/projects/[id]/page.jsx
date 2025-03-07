@@ -1,6 +1,6 @@
 import Playground from "../_components/Playground";
 
-async function Page({ params }) {
+async function page({ params }) {
   const { id } = await params;
 
   return (
@@ -10,4 +10,4 @@ async function Page({ params }) {
   );
 }
 
-export default Page;
+export default page;
