@@ -42,24 +42,76 @@ const defaultFiles = {
 async function fetchProjectCode(projectId) {
   try {
     if (!projectId) {
-      return defaultFiles
+      return {
+        "/index.html": {
+          code: defaultFiles["/index.html"].code,
+          hidden: false,
+          active: true
+        },
+        "/styles.css": {
+          code: defaultFiles["/styles.css"].code,
+          hidden: false
+        },
+        "/index.js": {
+          code: defaultFiles["/index.js"].code,
+          hidden: false
+        }
+      }
     }
 
     const project = await getManualProject(projectId)
 
     if (!project) {
-      return defaultFiles
+      return {
+        "/index.html": {
+          code: defaultFiles["/index.html"].code,
+          hidden: false,
+          active: true
+        },
+        "/styles.css": {
+          code: defaultFiles["/styles.css"].code,
+          hidden: false
+        },
+        "/index.js": {
+          code: defaultFiles["/index.js"].code,
+          hidden: false
+        }
+      }
     }
 
     return {
-      "/index.html": project.htmlCode || defaultFiles["/index.html"],
-      "/styles.css": project.cssCode || defaultFiles["/styles.css"],
-      "/index.js": project.jsCode || defaultFiles["/index.js"],
+      "/index.html": {
+        code: project.htmlCode || defaultFiles["/index.html"].code,
+        hidden: false,
+        active: true
+      },
+      "/styles.css": {
+        code: project.cssCode || defaultFiles["/styles.css"].code,
+        hidden: false
+      },
+      "/index.js": {
+        code: project.jsCode || defaultFiles["/index.js"].code,
+        hidden: false
+      }
     }
   } catch (error) {
     console.error("Failed to load project:", error)
     toast.error("Failed to load project")
-    return defaultFiles
+    return {
+      "/index.html": {
+        code: defaultFiles["/index.html"].code,
+        hidden: false,
+        active: true
+      },
+      "/styles.css": {
+        code: defaultFiles["/styles.css"].code,
+        hidden: false
+      },
+      "/index.js": {
+        code: defaultFiles["/index.js"].code,
+        hidden: false
+      }
+    }
   }
 }
 
